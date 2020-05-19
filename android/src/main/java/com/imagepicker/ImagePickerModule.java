@@ -358,31 +358,37 @@ public class ImagePickerModule extends ReactContextBaseJavaModule
 
       if (pickBoth) 
       {
-        libraryIntent.setType("image/* video/*");
+         
+        libraryIntent.setType("*/*");
+        String[] mimeTypes = {"image/*", "video/*"};
+        libraryIntent.putExtra(Intent.EXTRA_MIME_TYPES, mimeTypes);
+
       }
     }
+    
+        currentActivity.startActivityForResult(libraryIntent, requestCode);
 
-    if (libraryIntent.resolveActivity(reactContext.getPackageManager()) == null)
-    {
-      responseHelper.invokeError(callback, "Cannot launch photo library");
-      return;
-    }
+//     if (libraryIntent.resolveActivity(reactContext.getPackageManager()) == null)
+//     {
+//       responseHelper.invokeError(callback, "Cannot launch photo library");
+//       return;
+//     }
 
-    try
-    {
-      String chooseWhichLibraryTitle = null;
-      if (ReadableMapUtils.hasAndNotEmptyString(options, "chooseWhichLibraryTitle"))
-      {
-        chooseWhichLibraryTitle = options.getString("chooseWhichLibraryTitle");
-      }
+//     try
+//     {
+//       String chooseWhichLibraryTitle = null;
+//       if (ReadableMapUtils.hasAndNotEmptyString(options, "chooseWhichLibraryTitle"))
+//       {
+//         chooseWhichLibraryTitle = options.getString("chooseWhichLibraryTitle");
+//       }
 
-      currentActivity.startActivityForResult(Intent.createChooser(libraryIntent, chooseWhichLibraryTitle), requestCode);
-    }
-    catch (ActivityNotFoundException e)
-    {
-      e.printStackTrace();
-      responseHelper.invokeError(callback, "Cannot launch photo library");
-    }
+//       currentActivity.startActivityForResult(Intent.createChooser(libraryIntent, chooseWhichLibraryTitle), requestCode);
+//     }
+//     catch (ActivityNotFoundException e)
+//     {
+//       e.printStackTrace();
+//       responseHelper.invokeError(callback, "Cannot launch photo library");
+//     }
   }
 
   @Override
